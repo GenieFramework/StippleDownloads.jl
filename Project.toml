@@ -1,0 +1,10 @@
+name = "StippleDownloads"
+uuid = "291a174b-6542-42e7-9996-fc00d7c03310"
+authors = ["Helmut Hänsel <helmut.haensel@merckgroup.com>"]
+version = "0.1.0"
+
+[deps]
+Stipple = "4acbeb90-81a0-11ea-1966-bdaff8155998"
+
+[compat]
+Stipple = "0.27.23"
