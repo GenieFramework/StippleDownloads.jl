@@ -8,3 +8,4 @@ Stipple = "4acbeb90-81a0-11ea-1966-bdaff8155998"
 
 [compat]
 Stipple = "0.27.23"
+Julia = "1.6"
