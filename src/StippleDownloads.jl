@@ -57,7 +57,7 @@ function _download_binary(model::ReactiveModel, data, filename = "file.bin", arr
     push!(model, :__download__ => nothing, channel = getchannel(model); restrict = client)
 end
 
-function download_binary(model::ReactiveModel, data, filename = "file.bin", array_type::Type{<:Real} = T; client::Union{Nothing,UInt,Vector{UInt}} = nothing) where T <: Real
+function download_binary(model::ReactiveModel, data, filename = "file.bin", array_type::Type{<:Real}; client::Union{Nothing,UInt,Vector{UInt}} = nothing)
     _download_binary(model, data, filename, array_type; client)
 end
 
