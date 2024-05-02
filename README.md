@@ -5,9 +5,45 @@ The event-based handlers guarantee that only the requesting client receives a co
 
 There is support for text and binary files, filenames can be freely chosen.
 
+## Examples
 
-## Demo App
-Below you find a demo app with a typical use case.
+**Downloading a variable's content as raw data or as BSON**
+
+```julia
+using Stipple, Stipple.ReactiveTools
+using StippleUI, StippleDownloads
+using BSON
+
+@app begin
+    @in data = randn(1000)
+
+    @event download_raw begin
+        download_binary(__model__, data, "raw")
+    end
+    @event download_bson begin
+        # calling @save on `data` throws an error because it is a reactive variable. Need to make a copy
+        data_var = data
+        io = IOBuffer()
+        BSON.@save io data_var
+        seekstart(io)
+        download_binary(__model__, take!(io), "data.bson")
+    end
+
+end
+
+function ui()
+    row([
+            cell(btn(class="q-ml-lg", "Raw", icon="download", @on(:click, :download_raw, :addclient), color="primary", nocaps=true))
+            cell(btn(class="q-ml-lg", "BSON", icon="download", @on(:click, :download_bson, :addclient), color="secondary", nocaps=true))
+        ])
+    
+end
+
+@page("/", ui)
+
+```
+
+**Downloading a DataFrame as an Excel sheet**
 
 ```julia
 using Stipple, Stipple.ReactiveTools
