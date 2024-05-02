@@ -104,6 +104,7 @@ up(open_browser = true)
 
 To see the difference between calling with or without client info, duplicate the applications's tab and click the 'Download Text' button.
 
-Two identical files will be downloaded, because duplicating the tab establishes a synchronised copy of your app. To ensure that only the requesting client receives a file, you should include the client info via `event["_client"]`.
+Two identical files will be downloaded, because duplicating the tab establishes a synchronised copy of your app. To ensure that only the requesting client receives a file, you should restrict the download to the client via `event["_client"]`
+and make sure that the triggering button has an additional `:addclient` to include this information.
     
 ![Demo App](./docs/demo.png)
