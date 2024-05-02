@@ -56,27 +56,9 @@ using XLSX
 import Stipple.opts
 import StippleUI.Tables.table
 
-# build a function `writetable()` that writes to IO (PR currently pending)
-function writetable(io::IO, tables::Union{Vector, Tuple}; kwargs...)
-    XLSX.openxlsx(io, mode="w") do xf
-        for (i, table) in enumerate(tables)
-            table isa Pair || (table = nothing => table)
-            if i == 1
-                table[1] !== nothing && XLSX.rename!(xf[1], table[1])
-            else
-                table[1] === nothing ? XLSX.addsheet!(xf) : XLSX.addsheet!(xf, table[1])
-            end
-            XLSX.writetable!(xf[i], table[2]; kwargs...)
-        end
-    end
-end
-
-writetable(io::IO, tables; kwargs...) = writetable(io, [tables]; kwargs...)
-writetable(io::IO, tables...; kwargs...) = writetable(io, tables; kwargs...)
-
 function df_to_xlsx(df)
     io = IOBuffer()
-    writetable(io, df)
+    XLSX.writetable(io, df)
     take!(io)
 end
 
