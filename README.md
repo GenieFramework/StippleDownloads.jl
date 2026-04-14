@@ -16,19 +16,19 @@ using BSON
 
 @app begin
     @in data = randn(1000)
+end
 
-    @event download_raw begin
-        download_binary(__model__, data, "raw")
-    end
-    @event download_bson begin
-        # calling @save on `data` throws an error because it is a reactive variable. Need to make a copy
-        data_var = data
-        io = IOBuffer()
-        BSON.@save io data_var
-        seekstart(io)
-        download_binary(__model__, take!(io), "data.bson")
-    end
+@event download_raw begin
+    download_binary(__model__, data, "raw")
+end
 
+@event download_bson begin
+    # calling @save on `data` throws an error because it is a reactive variable. Need to make a copy
+    data_var = data
+    io = IOBuffer()
+    BSON.@save io data_var
+    seekstart(io)
+    download_binary(__model__, take!(io), "data.bson")
 end
 
 function ui()
@@ -65,17 +65,17 @@ end
 @app begin
     @out table = DataTable(DataFrame(:a => rand(1:10, 5), :b => rand(1:10, 5)))
     @in text = "The quick brown fox jumped over the ..."
+end
 
-    @event download_text begin
-        download_text(__model__, :text)
-    end
+@event download_text begin
+    download_text(__model__, :text)
+end
 
-    @event download_df begin
-        try
-            download_binary(__model__, df_to_xlsx(table.data), "file.xlsx"; client = event["_client"])
-        catch ex
-            println(ex)
-        end
+@event download_df begin
+    try
+        download_binary(__model__, df_to_xlsx(table.data), "file.xlsx"; client = event["_client"])
+    catch ex
+        println(ex)
     end
 end
 
